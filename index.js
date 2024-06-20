@@ -17,6 +17,13 @@ app.post('/login', (req, res) => {
   }
 });
 
+app.get('/products', (req, res)=>{
+  fs.readFile(process.cwd()+'/data/products.json', (err, data) => {
+    if (err) throw err;
+    res.send(JSON.parse(data));
+  });
+})
+
 app.get('/shops', (req, res)=>{
     fs.readFile(process.cwd()+'/data/shops.json', (err, data) => {
       if (err) throw err;
