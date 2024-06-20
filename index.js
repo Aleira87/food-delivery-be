@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require("path");
 const cors = require('cors');
-const fs = require("fs");
+const fs = require('fs');
 const app = express();
 const port = 3000;
 app.use(express.json());
@@ -23,6 +23,20 @@ app.get('/products', (req, res)=>{
     res.send(JSON.parse(data));
   });
 })
+
+app.get('/products/:ShopId', (req, res) => {
+  const shopId = req.params.shopId;
+  fs.readFile(path.join(process.cwd(), 'data', 'products.json'), (err, data) => {
+    console.log(JSON.parse(data));
+    if (err) throw err;
+    products = JSON.parse(data).filter(p => +p.shopId === +shopId);
+    if (products) {
+      res.send(products);
+    } else {
+      res.status(404).send({ error: 'Prodotto non trovato' });
+    }
+  });
+});
 
 app.get('/shops', (req, res)=>{
     fs.readFile(process.cwd()+'/data/shops.json', (err, data) => {
