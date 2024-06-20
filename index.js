@@ -17,19 +17,15 @@ app.post('/login', (req, res) => {
   }
 });
 
-app.get('/products', (req, res)=>{
-  fs.readFile(process.cwd()+'/data/products.json', (err, data) => {
-    if (err) throw err;
-    res.send(JSON.parse(data));
-  });
-})
 
-app.get('/products/:ShopId', (req, res) => {
+
+app.get('/products/:shopId', (req, res) => {
   const shopId = req.params.shopId;
   fs.readFile(path.join(process.cwd(), 'data', 'products.json'), (err, data) => {
     console.log(JSON.parse(data));
     if (err) throw err;
     products = JSON.parse(data).filter(p => +p.shopId === +shopId);
+    //products = JSON.parse(data);
     if (products) {
       res.send(products);
     } else {
@@ -37,6 +33,13 @@ app.get('/products/:ShopId', (req, res) => {
     }
   });
 });
+
+app.get('/products', (req, res)=>{
+  fs.readFile(process.cwd()+'/data/products.json', (err, data) => {
+    if (err) throw err;
+    res.send(JSON.parse(data));
+  });
+})
 
 app.get('/shops', (req, res)=>{
     fs.readFile(process.cwd()+'/data/shops.json', (err, data) => {
